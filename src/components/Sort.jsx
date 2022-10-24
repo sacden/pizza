@@ -1,4 +1,15 @@
+import React from 'react';
+
 function Sort() {
+  const [open, setOpen] = React.useState(false);
+  const [filter, setFilter] = React.useState(0);
+  const list = ['nejprodávanější', 'od nejdrazšího', 'podle abecedy'];
+
+  const onFilterChange = (index) => {
+    setFilter(index);
+    setOpen(!open);
+  };
+
   return (
     <div className="sort">
       <div className="sort__label">
@@ -14,15 +25,22 @@ function Sort() {
           />
         </svg>
         <b>Filter:</b>
-        <span>nejprodávanější</span>
+        <span onClick={() => setOpen(!open)}>{list.filter((el, index) => index === filter)}</span>
       </div>
-      <div className="sort__popup">
-        <ul>
-          <li className="active">nejpopulárnější</li>
-          <li>Od nejdrazšího</li>
-          <li>podle abecedy</li>
-        </ul>
-      </div>
+      {open && (
+        <div className="sort__popup">
+          <ul>
+            {list.map((el, index) => (
+              <li
+                key={el}
+                onClick={() => onFilterChange(index)}
+                className={index === filter ? 'active' : ''}>
+                {el}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
