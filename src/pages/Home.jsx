@@ -4,15 +4,13 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
   const [sortType, setSortType] = React.useState(0);
 
   const sortingList = ['price', 'category', 'rating'];
-
-  console.log('sortType' + sortingList[sortType]);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -31,6 +29,11 @@ const Home = () => {
       });
     window.scrollTo(0, 0);
   }, [categoryId, sortType]);
+
+  const pizzas = items
+    .filter((el) => el.title.toLowerCase().includes(searchValue.toLowerCase()))
+    .map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />);
+  const skeletons = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
   return (
     <>
       <div className="container">
@@ -39,11 +42,7 @@ const Home = () => {
           <Sort value={sortType} onClickSortType={(id) => setSortType(id)} />
         </div>
         <h2 className="content__title">Všechny kategorie</h2>
-        <div className="content__items">
-          {isLoading
-            ? [...new Array(6)].map((_, i) => <Skeleton key={i} />)
-            : items.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
-        </div>
+        <div className="content__items">{isLoading ? skeletons : pizzas}</div>
       </div>
     </>
   );
