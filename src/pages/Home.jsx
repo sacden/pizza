@@ -4,12 +4,14 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import { SearchContext } from '../App';
+import Pagination from '../components/Pagination';
 
 const Home = () => {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
   const [sortType, setSortType] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   const { searchValue } = React.useContext(SearchContext);
 
@@ -18,7 +20,7 @@ const Home = () => {
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://6356efe39243cf412f90972d.mockapi.io/items?${
+      `https://6356efe39243cf412f90972d.mockapi.io/items?page=${currentPage}&limit=4&${
         categoryId > 0 ? `category=${categoryId}` : ''
       }` +
         '&sortBy=' +
@@ -31,7 +33,7 @@ const Home = () => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, searchValue, currentPage]);
 
   const pizzas = items
     .filter((el) => el.title.toLowerCase().includes(searchValue.toLowerCase()))
@@ -47,6 +49,7 @@ const Home = () => {
         <h2 className="content__title">Všechny kategorie</h2>
         <div className="content__items">{isLoading ? skeletons : pizzas}</div>
       </div>
+      <Pagination onChangePage={(number) => setCurrentPage(number)} />
     </>
   );
 };
