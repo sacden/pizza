@@ -5,17 +5,26 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import { SearchContext } from '../App';
 import Pagination from '../components/Pagination';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice';
 
 const Home = () => {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
   const [sortType, setSortType] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(1);
+
+  const categoryId = useSelector((state) => state.filter.categoryId);
 
   const { searchValue } = React.useContext(SearchContext);
 
   const sortingList = ['price', 'category', 'rating'];
+
+  const dispatch = useDispatch();
+
+  const onChangeCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -43,7 +52,7 @@ const Home = () => {
     <>
       <div className="container">
         <div className="content__top">
-          <Categories value={categoryId} onClickCategory={(id) => setCategoryId(id)} />
+          <Categories value={categoryId} onClickCategory={onChangeCategory} />
           <Sort value={sortType} onClickSortType={(id) => setSortType(id)} />
         </div>
         <h2 className="content__title">Všechny kategorie</h2>

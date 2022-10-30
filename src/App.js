@@ -6,11 +6,14 @@ import Home from './pages/Home';
 import { Routes, Route } from 'react-router-dom';
 import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const SearchContext = React.createContext();
 
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
+  const count = useSelector((state) => state.filter.value);
+  const dispatch = useDispatch();
 
   return (
     <div className="wrapper">
@@ -18,7 +21,7 @@ function App() {
         <Header />
         <div className="content">
           <Routes>
-            <Route path="/" element={<Home searchValue={searchValue} />} />
+            <Route path="/" element={<Home />} />
             <Route path="not-found" element={<NotFound />} />
             <Route path="cart" element={<Cart />} />
             <Route path="*" element={<NotFound />} />
