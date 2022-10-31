@@ -53,7 +53,7 @@ const Home = () => {
       <div className="container">
         <div className="content__top">
           <Categories value={categoryId} onClickCategory={onChangeCategory} />
-          <Sort value={sortType} onClickSortType={(id) => setSortType(id)} />
+          <Sort />
         </div>
         <h2 className="content__title">Všechny kategorie</h2>
         <div className="content__items">{isLoading ? skeletons : pizzas}</div>
