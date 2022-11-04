@@ -32,6 +32,7 @@ const Home = () => {
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
+    dispatch(setCurrentPage(1));
   };
 
   const onChangePage = (number) => {
@@ -63,6 +64,7 @@ const Home = () => {
       dispatch(setFilters({ ...params, sort }));
     }
     isSearch.current = true;
+    fetchPizzas();
   }, []);
 
   //if first render have already done and parameters were changed, put parameters to url
