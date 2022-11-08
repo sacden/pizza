@@ -14,19 +14,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = React.useState(true);
-  //const [sortType, setSortType] = React.useState(0);
-  //const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-
+  const { searchValue } = React.useContext(SearchContext);
   const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage, searchValue } = useSelector((state) => state.filter);
-  // const categoryId = useSelector((state) => state.filter.categoryId);
-  // const currentPage = useSelector((state) => state.filter.currentPage);
-  // const sort = useSelector((state) => state.filter.sort);
-
-  //const { searchValue } = React.useContext(SearchContext);
-
+  const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
   const onChangeCategory = (id) => {
@@ -39,8 +30,6 @@ const Home = () => {
   };
 
   const getPizzas = async () => {
-    setIsLoading(true);
-
     //const currentPage =
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
@@ -64,7 +53,6 @@ const Home = () => {
       const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
       dispatch(setFilters({ ...params, sort }));
     }
-    //isSearch.current = true;
     fetchPizzas();
   }, []);
 
@@ -84,10 +72,7 @@ const Home = () => {
   //if first render have done, get products
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    //if (!isSearch.current) {
     getPizzas();
-    //}
-    //isSearch.current = false;
   }, [categoryId, sort, searchValue, currentPage]);
 
   const pizzas = items.map((pizza) => (
