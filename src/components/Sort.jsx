@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort } from '../redux/slices/filterSlice';
+import { setSort, selectSort } from '../redux/slices/filterSlice';
 
 export const sortList = [
   { name: 'od nejdrazšího', sortProperty: 'price' },
@@ -11,7 +11,7 @@ export const sortList = [
 function Sort() {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
+  const sort = useSelector(selectSort);
   const sortRef = React.useRef();
 
   const onFilterChange = (obj) => {
@@ -23,7 +23,6 @@ function Sort() {
     const handleClickOutside = (event) => {
       if (!event.path.includes(sortRef.current)) {
         setOpen(false);
-        console.log('click outside');
       }
     };
     document.body.addEventListener('click', handleClickOutside);

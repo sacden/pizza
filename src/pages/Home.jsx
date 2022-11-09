@@ -4,20 +4,23 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import { sortList } from '../components/Sort';
-import { SearchContext } from '../App';
 import Pagination from '../components/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import {
+  setCategoryId,
+  setCurrentPage,
+  setFilters,
+  selectFilter,
+} from '../redux/slices/filterSlice';
+import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzasSlice';
 import qs from 'qs';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
   const isMounted = React.useRef(false);
-  const { searchValue } = React.useContext(SearchContext);
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
+  const { items, status } = useSelector(selectPizzaData);
+  const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const onChangeCategory = (id) => {
@@ -30,7 +33,6 @@ const Home = () => {
   };
 
   const getPizzas = async () => {
-    //const currentPage =
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
     const sortBy = sortList.sortProperty;
@@ -76,9 +78,9 @@ const Home = () => {
   }, [categoryId, sort, searchValue, currentPage]);
 
   const pizzas = items.map((pizza) => (
-    <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
-      <PizzaBlock {...pizza} />
-    </Link>
+    // <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
+    <PizzaBlock key={pizza.id} {...pizza} />
+    // </Link>
   ));
   const skeletons = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
   return (
