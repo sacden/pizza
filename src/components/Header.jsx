@@ -53,7 +53,6 @@ function Header() {
             <span>
               {items.length > 0 ? items.map((el) => el.count).reduce((sum, el) => el + sum, 0) : 0}
             </span>
-            {console.log(items)}
           </Link>
         </div>
       </div>
