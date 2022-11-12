@@ -16,28 +16,29 @@ import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzasSlice';
 import qs from 'qs';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const isMounted = React.useRef(false);
   const { items, status } = useSelector(selectPizzaData);
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCategoryId(id));
     dispatch(setCurrentPage(1)); //my hack
   };
 
-  const onChangePage = (number) => {
+  const onChangePage = (number: number) => {
     dispatch(setCurrentPage(number));
   };
 
   const getPizzas = async () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
-    const sortBy = sortList.sortProperty;
+    const sortBy = sort.sortProperty;
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         sortBy,
         category,
@@ -77,7 +78,7 @@ const Home = () => {
     getPizzas();
   }, [categoryId, sort, searchValue, currentPage]);
 
-  const pizzas = items.map((pizza) => (
+  const pizzas = items.map((pizza: any) => (
     <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
       <PizzaBlock key={pizza.id} {...pizza} />
     </Link>

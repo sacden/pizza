@@ -1,11 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
-import Search from '../components/Search';
+import Search from './Search';
 import { useSelector } from 'react-redux';
 import { selectCart } from '../redux/slices/cartSlice';
 
 function Header() {
   const { totalPrice, items } = useSelector(selectCart);
   const locaction = useLocation();
+
+  const totalCount =
+    items.length > 0 ? items.reduce((sum: number, item: any) => sum + item.count, 0) : 0;
 
   return (
     <div className="header">
@@ -53,11 +56,7 @@ function Header() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span>
-                {items.length > 0
-                  ? items.map((el) => el.count).reduce((sum, el) => el + sum, 0)
-                  : 0}
-              </span>
+              <span>{totalCount}</span>
             </Link>
           )}
         </div>
