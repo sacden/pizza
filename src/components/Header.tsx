@@ -22,7 +22,7 @@ function Header() {
             </div>
           </div>
         </Link>
-        <Search />
+        {locaction.pathname !== '/cart' && <Search />}
         <div className="header__cart">
           {locaction.pathname !== '/cart' && (
             <Link to="/cart" className="button button--cart">

@@ -24,10 +24,10 @@ const Home: React.FC = () => {
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const dispatch = useAppDispatch();
 
-  const onChangeCategory = (id: number) => {
+  const onChangeCategory = React.useCallback((id: number) => {
     dispatch(setCategoryId(id));
     dispatch(setCurrentPage(1)); //my hack
-  };
+  }, []);
 
   const onChangePage = (number: number) => {
     dispatch(setCurrentPage(number));
@@ -98,7 +98,7 @@ const Home: React.FC = () => {
       <div className="container">
         <div className="content__top">
           <Categories value={categoryId} onClickCategory={onChangeCategory} />
-          <Sort />
+          <Sort value={sort} />
         </div>
         <h2 className="content__title">Všechny kategorie</h2>
         <div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
