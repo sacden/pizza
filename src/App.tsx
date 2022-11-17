@@ -16,7 +16,7 @@ function App() {
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/pizza/:id" element={<FullPizza />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Home />} />
       </Route>
     </Routes>
   );
